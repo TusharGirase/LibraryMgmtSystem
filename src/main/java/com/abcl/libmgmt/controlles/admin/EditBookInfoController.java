@@ -29,7 +29,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.abcl.libmgmt.models.Book;
@@ -39,10 +40,7 @@ import com.abcl.libmgmt.service.IBookService;
  *
  */
 @Controller
-public class AddNewBookController {
-
-    @Autowired
-    IBookService bookService;
+public class EditBookInfoController {
 
     @Autowired
     @Qualifier("bookValidator")
@@ -53,24 +51,28 @@ public class AddNewBookController {
         dataBinder.setValidator(bookValidator);
     }
 
-    @GetMapping("/admin/addbook")
-    public ModelAndView getIndexPage() {
-        ModelAndView mv = new ModelAndView("admin/library/addbook");
-        mv.addObject("book", new Book());
+    @Autowired
+    IBookService bookService;
+
+    @GetMapping("/admin/library/editbookinfo/{isbin}")
+    public ModelAndView getEditPage(@PathVariable("isbin") String isbinNo) {
+        ModelAndView mv = new ModelAndView("admin/library/editbookinfo");
+        Book book = bookService.findBookByIsbinNo(isbinNo);
+        mv.addObject("book", book);
         return mv;
     }
 
-    @PostMapping("/admin/addbook")
-    public ModelAndView addBookRecord(@ModelAttribute("book") @Valid Book book, BindingResult result) {
-        ModelAndView mv = new ModelAndView("redirect:/admin");
+    @PutMapping("/admin/library/editbookinfo/{isbin}")
+    public ModelAndView updateBookInfo(@ModelAttribute("book") @Valid Book bookToUpdate, BindingResult result) {
+        ModelAndView mv = new ModelAndView("redirect:/admin/books");
 
         if (result.hasErrors()) {
-            mv.setViewName("admin/library/addbook");
-            mv.addObject("book", book);
+            mv.setViewName("admin/library/editbookinfo");
+            mv.addObject("book", bookToUpdate);
             return mv;
         }
 
-        bookService.saveBookRecord(book);
+        bookService.saveBookRecord(bookToUpdate);
         return mv;
     }
 

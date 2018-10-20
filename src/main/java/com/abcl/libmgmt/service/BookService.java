@@ -53,4 +53,35 @@ public class BookService implements IBookService {
         return books;
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.abcl.libmgmt.service.IBookService#saveBookRecord()
+     */
+    @Override
+    public Book saveBookRecord(Book book) {
+        return bookRepository.save(book);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.abcl.libmgmt.service.IBookService#findBookByIsbinNo(java.lang.String)
+     */
+    @Override
+    public Book findBookByIsbinNo(String isbinNo) {
+        return bookRepository.findByIsbin(isbinNo);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.abcl.libmgmt.service.IBookService#deleteBookByIsbin(java.lang.String)
+     */
+    @Override
+    public void deleteBookByIsbin(String isbinNo) {
+        Book bookRecordToDelete = bookRepository.findByIsbin(isbinNo);
+        bookRepository.delete(bookRecordToDelete);
+    }
+
 }

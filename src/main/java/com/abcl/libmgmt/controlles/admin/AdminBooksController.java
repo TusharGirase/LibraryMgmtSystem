@@ -16,31 +16,33 @@
  *
  * ecabcl
  */
-package com.abcl.libmgmt.service;
+package com.abcl.libmgmt.controlles.admin;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.abcl.libmgmt.models.Book;
+import com.abcl.libmgmt.service.IBookService;
 
 /**
  *
  */
-public interface IBookService {
+@Controller
+public class AdminBooksController {
 
-    public default List<Book> getAllBooks() {
-        return new ArrayList<>();
+    @Autowired
+    IBookService bookService;
+
+    @GetMapping("admin/books")
+    public ModelAndView getAllBooksPage() {
+        List<Book> booksList = bookService.getAllBooks();
+        ModelAndView mv = new ModelAndView("admin/library/allBooks");
+        mv.addObject("books", booksList);
+        return mv;
     }
 
-    public default Book saveBookRecord(Book book) {
-        return null;
-    }
-
-    public default Book findBookByIsbinNo(String isbinNo) {
-        return null;
-    }
-
-    public default void deleteBookByIsbin(String isbinNo) {
-
-    }
 }
