@@ -28,9 +28,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class AppController {
 
-    @GetMapping("/")
+    @GetMapping("/app")
     public ModelAndView getIndexPage() {
-        return new ModelAndView("index");
+        return new ModelAndView("app/index");
     }
 
 }

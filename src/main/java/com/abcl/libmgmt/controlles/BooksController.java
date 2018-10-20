@@ -37,10 +37,10 @@ public class BooksController {
     @Autowired
     IBookService bookService;
 
-    @GetMapping("/books")
+    @GetMapping("app/books")
     public ModelAndView getAllBooksPage() {
         List<Book> booksList = bookService.getAllBooks();
-        ModelAndView mv = new ModelAndView("library/allBooks");
+        ModelAndView mv = new ModelAndView("app/library/allBooks");
         mv.addObject("books", booksList);
         return mv;
     }
