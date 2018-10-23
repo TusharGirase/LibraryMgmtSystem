@@ -84,4 +84,14 @@ public class BookService implements IBookService {
         bookRepository.delete(bookRecordToDelete);
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.abcl.libmgmt.service.IBookService#findBookByName()
+     */
+    @Override
+    public List<Book> findBookByTitle(String title) {
+        return bookRepository.findByBookTitle(title);
+    }
+
 }

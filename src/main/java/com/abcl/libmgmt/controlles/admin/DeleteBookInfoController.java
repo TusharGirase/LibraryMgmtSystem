@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.abcl.libmgmt.service.IBookService;
@@ -36,8 +37,24 @@ public class DeleteBookInfoController {
     IBookService bookService;
 
     @DeleteMapping("/admin/library/deletebook/{isbin}")
-    public ModelAndView updateBookInfo(@PathVariable("isbin") String isbinNo) {
+    public ModelAndView deleteBookInfoDelete(@PathVariable("isbin") String isbinNo) {
         ModelAndView mv = new ModelAndView("redirect:/admin/books");
+        bookService.deleteBookByIsbin(isbinNo);
+        return mv;
+    }
+
+    /**
+     * Justification for this method is at
+     * https://softwareengineering.stackexchange.com/questions/114156/why-are-there-are-no-put-and-delete-methods-on-html-forms
+     *
+     * Since HTML5 delete on form is no longer supported
+     *
+     * @param isbinNo
+     * @return
+     */
+    @PostMapping("/admin/library/deletebook/{isbin}")
+    public ModelAndView deleteBookInfoPost(@PathVariable("isbin") String isbinNo) {
+        ModelAndView mv = new ModelAndView("redirect:/admin/booksajax");
         bookService.deleteBookByIsbin(isbinNo);
         return mv;
     }

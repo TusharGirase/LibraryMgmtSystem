@@ -43,4 +43,9 @@ public interface IBookService {
     public default void deleteBookByIsbin(String isbinNo) {
 
     }
+
+    public default List<Book> findBookByTitle(String title) {
+        return new ArrayList<>();
+    }
+
 }

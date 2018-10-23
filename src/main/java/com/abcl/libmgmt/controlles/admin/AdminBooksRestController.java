@@ -21,9 +21,10 @@ package com.abcl.libmgmt.controlles.admin;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.abcl.libmgmt.models.Book;
 import com.abcl.libmgmt.service.IBookService;
@@ -31,26 +32,22 @@ import com.abcl.libmgmt.service.IBookService;
 /**
  *
  */
-@Controller
-public class AdminBooksController {
+@RestController
+public class AdminBooksRestController {
 
     @Autowired
     IBookService bookService;
 
-    @GetMapping("admin/books")
-    public ModelAndView getAllBooksPage() {
-        List<Book> booksList = bookService.getAllBooks();
-        ModelAndView mv = new ModelAndView("admin/library/allBooks");
-        mv.addObject("books", booksList);
-        return mv;
-    }
+    @GetMapping("admin/booksasjson")
+    public List<Book> getAllBooksAsJson(@Nullable @RequestParam("search_keyword") String searchKeyword) {
+        List<Book> booksList = null;
+        if (null == searchKeyword || searchKeyword.isEmpty()) {
+            booksList = bookService.getAllBooks();
+        } else {
+            booksList = bookService.findBookByTitle(searchKeyword);
+        }
 
-    @GetMapping("admin/booksajax")
-    public ModelAndView getAllBooksAjaxPage() {
-        List<Book> booksList = bookService.getAllBooks();
-        ModelAndView mv = new ModelAndView("admin/library/allBooksAjax");
-        mv.addObject("books", booksList);
-        return mv;
+        return booksList;
     }
 
 }
